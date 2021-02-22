@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import {
@@ -14,30 +14,53 @@ import {
 } from '@material-ui/core';
 import { auth } from '../../util/firebase';
 
-type SignInInputs = {
+type SignUpInputs = {
   email: string;
   password: string;
+  confirmPassword: string;
 };
 
-const SignIn: React.FC = () => {
-  const { register, handleSubmit, reset } = useForm<SignInInputs>();
+const SignUp: React.FC = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    errors,
+    setError,
+    reset,
+  } = useForm<SignUpInputs>();
   const [firebaseError, setFirebaseError] = useState<string>('');
 
-  const onSubmit = async (data: SignInInputs, e: any) => {
+  const onSubmit = async (data: SignUpInputs, e: any) => {
     try {
-      await auth.signInWithEmailAndPassword(data.email, data.password);
+      const user = await auth.createUserWithEmailAndPassword(
+        data.email,
+        data.password
+      );
       e.target.reset();
       reset();
+      console.log(user);
       setFirebaseError('');
     } catch (e) {
       setFirebaseError(e.message);
     }
   };
 
+  const validateConfirmPassword = (confirmPassword: string) => {
+    if (!(confirmPassword === watch('password'))) {
+      setError('confirmPassword', {
+        type: 'validate',
+        message: 'Passwords do not match',
+      });
+      return false;
+    }
+    return true;
+  };
+
   return (
     <Container maxWidth="sm">
       <Card>
-        <CardHeader title="Sign In" />
+        <CardHeader title="Sign Up" />
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={3}>
@@ -66,11 +89,24 @@ const SignIn: React.FC = () => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography>
-                    <Link component={RouterLink} to="/reset-password">
-                      Forgot your password?
-                    </Link>
-                  </Typography>
+                  <TextField
+                    id="confirm-password"
+                    name="confirmPassword"
+                    inputRef={register({
+                      required: true,
+                      validate: validateConfirmPassword,
+                    })}
+                    required
+                    label="Confirm Password"
+                    type="password"
+                    variant="outlined"
+                    helperText={
+                      errors.confirmPassword
+                        ? errors.confirmPassword.message
+                        : ''
+                    }
+                    fullWidth
+                  />
                 </Grid>
                 {firebaseError && (
                   <Grid item xs={12}>
@@ -86,13 +122,14 @@ const SignIn: React.FC = () => {
                     fullWidth
                     type="submit"
                   >
-                    Sign In
+                    Sign Up
                   </Button>
                 </Grid>
                 <Grid item xs={12}>
                   <Typography>
-                    <Link component={RouterLink} to="signup">
-                      Create Account
+                    I have an account.{' '}
+                    <Link component={RouterLink} to="/login">
+                      Log in
                     </Link>
                   </Typography>
                 </Grid>
@@ -105,4 +142,4 @@ const SignIn: React.FC = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;
