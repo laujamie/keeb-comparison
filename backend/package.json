@@ -17,7 +17,7 @@
     "nodemon": "^2.0.7"
   },
   "scripts": {
-    "start": "yarn src/server.js",
+    "start": "NODE_ENV=production yarn src/server.js",
     "dev": "nodemon src/server.js",
     "dev:db": "docker-compose up"
   }
