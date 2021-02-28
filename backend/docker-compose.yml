@@ -1,0 +1,12 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: keeb_comparison
+      POSTGRES_TEST_DB: keebs_test
+    ports:
+      - '15432:5432'
+    restart: always
