@@ -3,6 +3,9 @@ const { verifyToken } = require('../services/firebase-admin');
 module.exports = async (req, res, next) => {
   try {
     const authHeader = req.header.authorization;
+    if (!authHeader) {
+      throw Error('Authorization header must be provided');
+    }
     const [bearerText, token] = authHeader.split();
     if (bearerText.toLowerCase() !== 'bearer') {
       throw Error('Authorization header must be provided in Bearer format');
