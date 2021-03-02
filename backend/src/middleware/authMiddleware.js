@@ -17,6 +17,7 @@ module.exports = async (req, res, next) => {
     if (req.body.userId && req.body.userId !== decodedToken.sub) {
       throw Error('Invalid user id provided in request');
     }
+    req.user = decodedToken;
     next();
   } catch (e) {
     res.status(401).json({
