@@ -1,0 +1,13 @@
+{
+  "name": "keeb-comparison",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "repository": "git@github.com:laujamie/keeb-comparison.git",
+  "author": "laujamie <36782341+laujamie@users.noreply.github.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "cd backend && npm start",
+    "heroku-postbuild": "cd backend && npm install"
+  }
+}
