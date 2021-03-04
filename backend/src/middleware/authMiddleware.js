@@ -1,6 +1,6 @@
 const { verifyToken } = require('../services/firebase-admin');
 
-module.exports = async (req, res, next) => {
+const isAuthenticated = async (req, res, next) => {
   try {
     const authHeader = req.header.authorization;
     if (!authHeader) {
@@ -25,3 +25,25 @@ module.exports = async (req, res, next) => {
     });
   }
 };
+
+const isAuthorized = (validRoles, allowSameUser) => {
+  return (req, res, next) => {
+    const { user } = req;
+    const { id } = req.params;
+
+    if (!user)
+      return res.status(401).json({
+        error: 'User is not authenticated',
+      });
+
+    if (allowSameUser && user.sub === id) return next();
+    if (!user.role || !validRoles.includes(user.role)) {
+      return res.status(401).json({
+        error: 'User is not authorized to perform this action',
+      });
+    }
+    return next();
+  };
+};
+
+module.exports = { isAuthenticated, isAuthorized };

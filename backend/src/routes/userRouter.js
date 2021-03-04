@@ -1,17 +1,17 @@
 const express = require('express');
 const router = express.Router();
 
-const authMiddleware = require('../middleware/authMiddleware');
+const { isAuthenticated } = require('../middleware/authMiddleware');
+const { initializeUser } = require('../services/firebase-admin');
 
-const { createUser } = require('../db/queries/userQueries');
+router.use(isAuthenticated());
 
-router.use(authMiddleware());
-
-router.post('/signup', (req, res) => {
+router.post('/signup', async (req, res) => {
   const { user } = req;
-  createUser(user.email, user.sub)
-    .then(() => res.json({ message: 'User created' }))
-    .catch((err) => res.status(500).json({ error: err.message }));
+  await initializeUser(user.sub);
+  res.json({
+    message: 'User initialized successfully',
+  });
 });
 
 module.exports(router);

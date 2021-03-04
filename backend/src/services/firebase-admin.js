@@ -1,12 +1,4 @@
-const admin = require('firebase-admin');
-
-admin.initializeApp({
-  credential: admin.credential.cert({
-    projectId: process.env.FIREBASE_PROJECT_ID,
-    private_key: process.env.FIREBASE_PRIVATE_KEY,
-    client_email: process.env.FIREBASE_CLIENT_EMAIL,
-  }),
-});
+const admin = require('../util/firebase-admin');
 
 /** Verifies provided token using the Firebase admin
  *
@@ -16,4 +8,12 @@ const verifyToken = async (token) => {
   return await admin.auth().verifyIdToken(token);
 };
 
-exports.verifyToken = verifyToken;
+/**
+ * Initializes a user with the default role
+ * @param {string} uid
+ */
+const initializeUser = (uid) => {
+  return admin.auth().setCustomUserClaims(uid, { role: 'user' });
+};
+
+module.exports = { verifyToken, initializeUser };
