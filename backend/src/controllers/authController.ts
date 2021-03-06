@@ -1,22 +1,28 @@
-const { verifyToken } = require('../services/firebase-admin');
+import { Response, NextFunction } from 'express';
+import { verifyToken } from '../util/firebaseAdmin';
+import { AuthRequest, UserRole } from '../types/auth';
 
-const isAuthenticated = async (req, res, next) => {
+/**
+ * Auth middleware to check if user is authenticated
+ */
+export const isAuthenticated = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    const authHeader = req.header.authorization;
+    const authHeader = req.headers.authorization;
     if (!authHeader) {
       throw Error('Authorization header must be provided');
     }
-    const [bearerText, token] = authHeader.split();
-    if (bearerText.toLowerCase() !== 'bearer') {
+    const [bearerText, token] = authHeader.split(' ');
+    if (bearerText !== 'Bearer') {
       throw Error('Authorization header must be provided in Bearer format');
     }
     if (!token) {
       throw Error('A valid authorization token must be provided');
     }
     const decodedToken = await verifyToken(token);
-    if (req.body.userId && req.body.userId !== decodedToken.sub) {
-      throw Error('Invalid user id provided in request');
-    }
     req.user = decodedToken;
     next();
   } catch (e) {
@@ -26,8 +32,17 @@ const isAuthenticated = async (req, res, next) => {
   }
 };
 
-const isAuthorized = (validRoles, allowSameUser) => {
-  return (req, res, next) => {
+/**
+ * Auth middleware to check if user is authorized to access a resource
+ *
+ * @param validRoles Array containing authorized roles
+ * @param allowSameUser Boolean to allow same user on route
+ */
+export const isAuthorized = (
+  validRoles: UserRole[],
+  allowSameUser: boolean
+) => {
+  return (req: AuthRequest, res: Response, next: NextFunction) => {
     const { user } = req;
     const { id } = req.params;
 
@@ -45,5 +60,3 @@ const isAuthorized = (validRoles, allowSameUser) => {
     return next();
   };
 };
-
-module.exports = { isAuthenticated, isAuthorized };

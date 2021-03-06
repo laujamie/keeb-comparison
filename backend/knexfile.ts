@@ -1,15 +1,19 @@
-const dotenv = require('dotenv');
+import * as dotenv from 'dotenv';
 dotenv.config();
 
-module.exports = {
+export type Config = {
+  [key: string]: any
+}
+
+const config: Config = {
   development: {
     client: 'pg',
     connection: process.env.DATABASE_URL,
     migrations: {
-      directory: './src//data/migrations',
+      directory: './data/migrations',
     },
     seeds: {
-      directory: './src/data/seeds',
+      directory: './data/seeds',
     },
   },
 
@@ -28,3 +32,6 @@ module.exports = {
     },
   },
 };
+
+module.exports = config;
+export default config;
