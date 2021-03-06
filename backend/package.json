@@ -31,6 +31,7 @@
     "build": "tsc",
     "prebuild": "rimraf ./dist",
     "start": "NODE_ENV=production node dist/src/server.js",
-    "migrate": "knex migrate:latest"
+    "migrate": "knex migrate:latest",
+    "migrate:production": "knex migrate:latest --env production"
   }
 }
