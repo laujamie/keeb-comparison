@@ -1,9 +1,10 @@
 import * as dotenv from 'dotenv';
+import { knexSnakeCaseMappers } from 'objection';
 dotenv.config();
 
 export type Config = {
-  [key: string]: any
-}
+  [key: string]: any;
+};
 
 const config: Config = {
   development: {
@@ -15,6 +16,7 @@ const config: Config = {
     seeds: {
       directory: './data/seeds',
     },
+    ...knexSnakeCaseMappers(),
   },
 
   production: {
@@ -30,6 +32,7 @@ const config: Config = {
     seeds: {
       directory: './src/data/seeds',
     },
+    ...knexSnakeCaseMappers(),
   },
 };
 
