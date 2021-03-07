@@ -1,6 +1,8 @@
 import { Response, NextFunction } from 'express';
 import { verifyToken } from '../util/firebaseAdmin';
 import { AuthRequest, UserRole } from '../types/auth';
+import AuthenticationError from '../errors/AuthenticationError';
+import AuthorizationError from '../errors/AuthorizationError';
 
 /**
  * Auth middleware to check if user is authenticated
@@ -26,9 +28,7 @@ export const isAuthenticated = async (
     req.user = decodedToken;
     next();
   } catch (e) {
-    res.status(401).json({
-      error: e.message || new Error('Invalid request!'),
-    });
+    throw new AuthenticationError(e.message);
   }
 };
 
@@ -40,23 +40,19 @@ export const isAuthenticated = async (
  */
 export const isAuthorized = (
   validRoles: UserRole[],
-  allowSameUser: boolean
+  allowSameUser: boolean = false
 ) => {
   return (req: AuthRequest, res: Response, next: NextFunction) => {
     const { user } = req;
     const { id } = req.params;
 
-    if (!user)
-      return res.status(401).json({
-        error: 'User is not authenticated',
-      });
+    if (!user) throw new AuthenticationError();
 
     if (allowSameUser && user.sub === id) return next();
     if (!user.role || !validRoles.includes(user.role)) {
-      return res.status(401).json({
-        error: 'User is not authorized to perform this action',
-      });
+      throw new AuthorizationError(user.sub);
     }
+
     return next();
   };
 };
