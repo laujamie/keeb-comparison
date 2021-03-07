@@ -4,6 +4,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import db from './db';
+import errorMiddleware from './middleware/errorMiddleware';
+import switchRouter from './routes/switchRoutes';
 
 Model.knex(db);
 
@@ -22,8 +24,10 @@ app.use(cors(corsConfig));
 app.use(helmet());
 app.use(morgan('common'));
 app.use(express.json());
+app.use(errorMiddleware);
 
 // Routers and routes
+app.use('/switches', switchRouter);
 app.get('/', (req, res) => {
   res.send('Hello World');
 });
