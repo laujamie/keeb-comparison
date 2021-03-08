@@ -7,6 +7,7 @@ class MatchModel extends BaseModel {
   switchOneId!: number;
   switchTwoId!: number;
   completedDate?: string;
+  switchOneWin?: boolean;
   uid!: string;
 
   static get tableName() {

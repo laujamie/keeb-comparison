@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import db from './db';
 import errorMiddleware from './middleware/errorMiddleware';
 import switchRouter from './routes/switchRoutes';
+import matchRouter from './routes/matchRoutes';
 
 Model.knex(db);
 
@@ -28,9 +29,7 @@ app.use(errorMiddleware);
 
 // Routers and routes
 app.use('/switches', switchRouter);
-app.get('/', (req, res) => {
-  res.send('Hello World');
-});
+app.use('/matches', matchRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running at port ${PORT}`);

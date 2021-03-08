@@ -16,6 +16,7 @@ export async function up(knex: Knex): Promise<void> {
       .notNullable()
       .onDelete('cascade');
     table.dateTime('completed_date');
+    table.boolean('switch_one_win');
     table.string('uid').notNullable();
   });
 }
