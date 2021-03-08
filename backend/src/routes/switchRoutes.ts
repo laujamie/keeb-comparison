@@ -12,7 +12,7 @@ router.use(isAuthenticated);
 
 router.post('/new', addSwitch);
 
-router.post('/:id/verify', isAuthorized(['admin']), approveSwitch);
+router.post('/:userId/verify', isAuthorized(['admin']), approveSwitch);
 
 router.get('/', getSwitches);
 

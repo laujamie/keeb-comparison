@@ -44,11 +44,11 @@ export const isAuthorized = (
 ) => {
   return (req: AuthRequest, res: Response, next: NextFunction) => {
     const { user } = req;
-    const { id } = req.params;
+    const { userId } = req.params;
 
     if (!user) throw new AuthenticationError();
 
-    if (allowSameUser && user.sub === id) return next();
+    if (allowSameUser && user.sub === userId) return next();
     if (!user.role || !validRoles.includes(user.role)) {
       throw new AuthorizationError(user.sub);
     }
