@@ -24,7 +24,7 @@ const config: Config = {
     connection: process.env.DATABASE_URL,
     pool: {
       min: 2,
-      max: 10,
+      max: 20,
     },
     migrations: {
       directory: './src/data/migrations',
