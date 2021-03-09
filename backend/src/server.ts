@@ -7,6 +7,7 @@ import db from './db';
 import errorMiddleware from './middleware/errorMiddleware';
 import switchRouter from './routes/switchRoutes';
 import matchRouter from './routes/matchRoutes';
+import userRouter from './routes/userRoutes';
 
 Model.knex(db);
 
@@ -30,6 +31,7 @@ app.use(errorMiddleware);
 // Routers and routes
 app.use('/switches', switchRouter);
 app.use('/matches', matchRouter);
+app.use('/user', userRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running at port ${PORT}`);
