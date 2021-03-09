@@ -9,6 +9,8 @@ import PasswordResetView from './views/PasswordResetView';
 import { auth } from './util/firebase';
 import { userState } from './state/atoms/userAtoms';
 import AppBar from './components/AppBar';
+import AuthenticatedRoute from './components/AuthenticatedRoute';
+import UnauthenticatedRoute from './components/UnauthenticatedRoute';
 
 const useStyles = makeStyles({
   container: {
@@ -23,6 +25,9 @@ const App = () => {
   useEffect(() => {
     const unregisterAuthObserver = auth.onAuthStateChanged((newUser) => {
       if (newUser !== null) {
+        newUser
+          .getIdTokenResult(true)
+          .then((idTokenResult) => console.log(idTokenResult));
         setUser({
           isLoaded: true,
           isAuthenticated: true,
@@ -47,15 +52,15 @@ const App = () => {
         <Grid item xs={true}>
           <Container maxWidth="lg" className={classes.container}>
             <Switch>
-              <Route path="/login" exact>
+              <UnauthenticatedRoute path="/login" exact>
                 <SignInView />
-              </Route>
-              <Route path="/signup" exact>
+              </UnauthenticatedRoute>
+              <UnauthenticatedRoute path="/signup" exact>
                 <SignUpView />
-              </Route>
-              <Route path="/reset-password" exact>
+              </UnauthenticatedRoute>
+              <UnauthenticatedRoute path="/reset-password" exact>
                 <PasswordResetView />
-              </Route>
+              </UnauthenticatedRoute>
               <Route path="/" exact>
                 <div>
                   <p>Lmao</p>

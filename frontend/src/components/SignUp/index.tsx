@@ -13,6 +13,7 @@ import {
   Link,
 } from '@material-ui/core';
 import { auth } from '../../util/firebase';
+import { initializeUser } from '../../services/authService';
 
 type SignUpInputs = {
   email: string;
@@ -37,6 +38,7 @@ const SignUp: React.FC = () => {
         data.email,
         data.password
       );
+      await initializeUser();
       e.target.reset();
       reset();
       console.log(user);
