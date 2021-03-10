@@ -2,10 +2,10 @@ import { Knex } from 'knex';
 
 export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
-  await knex('table_name').del();
+  await knex('switches').del();
 
   // Inserts seed entries
-  await knex('table_name').insert([
+  await knex('switches').insert([
     {
       id: 1,
       name: 'Cherry MX Brown',
@@ -14,6 +14,7 @@ export async function seed(knex: Knex): Promise<void> {
       elo: 1000.0,
       numMatches: 0,
       isVerified: true,
+      type: 'tactile',
     },
     {
       id: 2,
@@ -23,6 +24,7 @@ export async function seed(knex: Knex): Promise<void> {
       elo: 1000.0,
       numMatches: 0,
       isVerified: true,
+      type: 'tactile',
     },
     {
       id: 3,
@@ -32,6 +34,7 @@ export async function seed(knex: Knex): Promise<void> {
       elo: 1000.0,
       numMatches: 0,
       isVerified: true,
+      type: 'linear',
     },
     {
       id: 4,
@@ -41,14 +44,25 @@ export async function seed(knex: Knex): Promise<void> {
       elo: 1000.0,
       numMatches: 0,
       isVerified: true,
+      type: 'linear',
     },
     {
       id: 5,
+      name: 'Kailh Box Jades',
+      description: 'Thicc clicks that make all your friends hate you',
+      elo: 1000.0,
+      numMatches: 0,
+      isVerified: true,
+      type: 'clicky',
+    },
+    {
+      id: 6,
       name: 'Feker Pandas',
       description: "Fake Holy Pandas. At least they're better than MX Browns",
       elo: 1000.0,
       numMatches: 0,
       isVerified: false,
+      type: 'tactile',
     },
   ]);
 }
