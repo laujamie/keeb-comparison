@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import SignInView from './views/SignInView';
 import SignUpView from './views/SignUpView';
 import PasswordResetView from './views/PasswordResetView';
+import LeaderboardView from './views/LeaderboardView';
 import { auth } from './util/firebase';
 import { userState } from './state/atoms/userAtoms';
 import AppBar from './components/AppBar';
@@ -61,6 +62,9 @@ const App = () => {
               <UnauthenticatedRoute path="/reset-password" exact>
                 <PasswordResetView />
               </UnauthenticatedRoute>
+              <Route path="/leaderboard" exact>
+                <LeaderboardView />
+              </Route>
               <Route path="/" exact>
                 <div>
                   <p>Lmao</p>
