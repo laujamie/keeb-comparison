@@ -8,11 +8,13 @@ import {
 
 const router = Router();
 
-router.use(isAuthenticated);
+router.post('/new', isAuthenticated, addSwitch);
 
-router.post('/new', addSwitch);
-
-router.post('/:userId/verify', isAuthorized(['admin']), approveSwitch);
+router.post(
+  '/:userId/verify',
+  [isAuthenticated, isAuthorized(['admin'])],
+  approveSwitch
+);
 
 router.get('/', getSwitches);
 

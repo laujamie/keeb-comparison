@@ -47,10 +47,16 @@ export const updateMatchStatus = async (req: Request, res: Response) => {
   const [oldEloOne, oldEloTwo] = [switchOne.elo, switchTwo.elo];
   const updatedSwitchOne = await switchOne
     .$query()
-    .patchAndFetch({ elo: calculateElo(oldEloOne, oldEloTwo, switchOneWin) });
+    .patchAndFetch({
+      elo: calculateElo(oldEloOne, oldEloTwo, switchOneWin),
+      numMatches: switchOne.numMatches + 1,
+    });
   const updatedSwitchTwo = await switchTwo
     .$query()
-    .patchAndFetch({ elo: calculateElo(oldEloTwo, oldEloOne, !switchOneWin) });
+    .patchAndFetch({
+      elo: calculateElo(oldEloTwo, oldEloOne, !switchOneWin),
+      numMatches: switchTwo.numMatches + 1,
+    });
   return res.json({
     switchOne: updatedSwitchOne,
     switchTwo: updatedSwitchTwo,

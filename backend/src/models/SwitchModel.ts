@@ -8,7 +8,7 @@ class SwitchModel extends BaseModel {
   numMatches!: number;
   isVerified!: boolean;
 
-  static get TableName() {
+  static get tableName() {
     return 'switches';
   }
 

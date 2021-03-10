@@ -30,6 +30,6 @@ export const approveSwitch = async (req: Request, res: Response) => {
 };
 
 export const getSwitches = async (req: Request, res: Response) => {
-  const switches = await SwitchModel.query();
+  const switches = await SwitchModel.query().where({ isVerified: 1 });
   return res.json({ switches });
 };
