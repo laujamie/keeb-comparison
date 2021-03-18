@@ -17,7 +17,7 @@ const plugins = [
       libraryDirectory: 'esm',
       camel2DashComponentName: false,
     },
-    'core',
+    'lab',
   ],
   [
     'babel-plugin-import',
