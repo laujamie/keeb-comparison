@@ -1,19 +1,26 @@
 import React, { useEffect } from 'react';
 import { useQuery } from 'react-query';
-import {
-  Table,
-  TableHead,
-  TableBody,
-  TableCell,
-  TableRow,
-  Typography,
-} from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Skeleton } from '@material-ui/lab';
 import { apiClient } from '../../services/apiService';
+import { HeadCell } from '../../types/tables';
+import SortTable from '../../components/SortTable';
+
+interface Switch {
+  name: string;
+  type: string;
+  elo: number;
+  numMatches: number;
+  [name: string]: string | number;
+}
+
+interface SwitchResponse {
+  switches: Switch[];
+}
 
 const fetchSwitches = async () => {
-  const response = await apiClient.get('/switches');
+  const response = await apiClient.get<SwitchResponse>('/switches');
   return response.data;
 };
 
@@ -23,14 +30,27 @@ const useStyles = makeStyles({
   },
 });
 
+const headCells: HeadCell<Switch>[] = [
+  { id: 'name', numeric: false, disablePadding: false, label: 'Name' },
+  { id: 'type', numeric: false, disablePadding: false, label: 'Type' },
+  { id: 'elo', numeric: true, disablePadding: false, label: 'Elo' },
+  {
+    id: 'numMatches',
+    numeric: true,
+    disablePadding: false,
+    label: '# of Matches',
+  },
+];
+
 const LeaderboardView: React.FC = () => {
   const { isError, isLoading, data } = useQuery('all-switches', fetchSwitches);
   const classes = useStyles();
+
   useEffect(() => {
     if (!isLoading) console.log(data);
   }, [isLoading, data]);
 
-  if (isLoading) {
+  if (isLoading || !data) {
     return <Skeleton height={600} />;
   }
 
@@ -41,34 +61,20 @@ const LeaderboardView: React.FC = () => {
   }
 
   return (
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell>Name</TableCell>
-          <TableCell>Switch Type</TableCell>
-          <TableCell>Elo</TableCell>
-          <TableCell># of Matches</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {data.switches.map((switchObj: any) => (
-          <TableRow key={`switch-row-${switchObj.id}`}>
-            <TableCell className={classes.tableCell}>
-              {switchObj.name}
-            </TableCell>
-            <TableCell className={classes.tableCell}>
-              {switchObj.type}
-            </TableCell>
-            <TableCell className={classes.tableCell}>
-              {switchObj.elo.toFixed(1)}
-            </TableCell>
-            <TableCell className={classes.tableCell}>
-              {switchObj.numMatches}
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <SortTable
+      headCells={headCells}
+      data={data.switches.map(
+        (newSwitch: Switch): Switch => ({
+          name: newSwitch.name,
+          type: newSwitch.type,
+          elo: newSwitch.elo,
+          numMatches: newSwitch.numMatches,
+        })
+      )}
+      defaultOrder="elo"
+      tableLabel="switch-leaderboard"
+      tableCellClassName={classes.tableCell}
+    />
   );
 };
 
