@@ -13,7 +13,7 @@ const AppBar: React.FC = () => {
     <MuiAppBar position="static">
       <Container maxWidth="lg">
         <Toolbar disableGutters>
-          <Link component={RouterLink} to="/" color="inherit">
+          <Link component={RouterLink} to="/" color="inherit" underline="none">
             <Typography variant="h6" color="inherit">
               KeebComparison
             </Typography>

@@ -92,6 +92,7 @@ const SortTable = <T extends { [name: string]: number | string }>({
                         key={`${row.name}-${key}`}
                         align={cell.numeric ? 'right' : 'left'}
                         padding={cell.disablePadding ? 'none' : 'default'}
+                        className={tableCellClassName}
                       >
                         {row[key]}
                       </TableCell>

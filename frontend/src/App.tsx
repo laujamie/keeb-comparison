@@ -17,6 +17,10 @@ const useStyles = makeStyles({
   container: {
     height: '100%',
   },
+  bodyContainer: {
+    paddingTop: '1rem',
+    paddingBottom: '1rem',
+  },
 });
 
 const App = () => {
@@ -46,12 +50,20 @@ const App = () => {
   return (
     <Router>
       <CssBaseline />
-      <Grid className={classes.container} container direction="column">
+      <Grid
+        className={classes.container}
+        container
+        direction="column"
+        wrap="nowrap"
+      >
         <Grid item>
           <AppBar />
         </Grid>
         <Grid item xs={true}>
-          <Container maxWidth="lg" className={classes.container}>
+          <Container
+            maxWidth="lg"
+            className={`${classes.container} ${classes.bodyContainer}`}
+          >
             <Switch>
               <UnauthenticatedRoute path="/login" exact>
                 <SignInView />

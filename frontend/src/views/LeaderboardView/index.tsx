@@ -61,20 +61,22 @@ const LeaderboardView: React.FC = () => {
   }
 
   return (
-    <SortTable
-      headCells={headCells}
-      data={data.switches.map(
-        (newSwitch: Switch): Switch => ({
-          name: newSwitch.name,
-          type: newSwitch.type,
-          elo: newSwitch.elo,
-          numMatches: newSwitch.numMatches,
-        })
-      )}
-      defaultOrder="elo"
-      tableLabel="switch-leaderboard"
-      tableCellClassName={classes.tableCell}
-    />
+    <div style={{ width: '100%' }}>
+      <SortTable
+        headCells={headCells}
+        data={data.switches.map(
+          (newSwitch: Switch): Switch => ({
+            name: newSwitch.name,
+            type: newSwitch.type,
+            elo: newSwitch.elo,
+            numMatches: newSwitch.numMatches,
+          })
+        )}
+        defaultOrder="elo"
+        tableLabel="switch-leaderboard"
+        tableCellClassName={classes.tableCell}
+      />
+    </div>
   );
 };
 
