@@ -1,9 +1,7 @@
-import React, { useEffect } from 'react';
-import { useQuery } from 'react-query';
+import React from 'react';
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Skeleton } from '@material-ui/lab';
-import { apiClient } from '../../services/apiService';
 import { HeadCell } from '../../types/tables';
 import SortTable from '../../components/SortTable';
 import { useSwitches, Switch } from '../../queries/switchQueries';
