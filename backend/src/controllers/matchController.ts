@@ -6,14 +6,18 @@ import AuthenticationError from '../errors/AuthenticationError';
 import { calculateElo } from '../util/eloUtil';
 import AuthorizationError from '../errors/AuthorizationError';
 import MatchCompletedError from '../errors/MatchCompletedError';
+import { getRandomInt } from '../util/numberUtil';
 
 export const newMatch = async (req: AuthRequest, res: Response) => {
-  const [switchOne, switchTwo] = await SwitchModel.query()
-    .orderByRaw('random()')
-    .limit(2);
   if (!req.user) {
     throw new AuthenticationError();
   }
+  const switches = await SwitchModel.query().where({ isVerified: 1 });
+  const maxIdx = switches.length - 1;
+  const idxOne = getRandomInt(0, maxIdx);
+  let idxTwo = getRandomInt(0, maxIdx);
+  while (idxTwo === idxOne) idxTwo = getRandomInt(0, maxIdx);
+  const [switchOne, switchTwo] = [switches[idxOne], switches[idxTwo]];
   const previousMatches = await MatchModel.query()
     .where('uid', '=', req.user.sub)
     .whereNull('completedDate');
@@ -45,18 +49,14 @@ export const updateMatchStatus = async (req: Request, res: Response) => {
     match.switchTwoId,
   ]);
   const [oldEloOne, oldEloTwo] = [switchOne.elo, switchTwo.elo];
-  const updatedSwitchOne = await switchOne
-    .$query()
-    .patchAndFetch({
-      elo: calculateElo(oldEloOne, oldEloTwo, switchOneWin),
-      numMatches: switchOne.numMatches + 1,
-    });
-  const updatedSwitchTwo = await switchTwo
-    .$query()
-    .patchAndFetch({
-      elo: calculateElo(oldEloTwo, oldEloOne, !switchOneWin),
-      numMatches: switchTwo.numMatches + 1,
-    });
+  const updatedSwitchOne = await switchOne.$query().patchAndFetch({
+    elo: calculateElo(oldEloOne, oldEloTwo, switchOneWin),
+    numMatches: switchOne.numMatches + 1,
+  });
+  const updatedSwitchTwo = await switchTwo.$query().patchAndFetch({
+    elo: calculateElo(oldEloTwo, oldEloOne, !switchOneWin),
+    numMatches: switchTwo.numMatches + 1,
+  });
   return res.json({
     switchOne: updatedSwitchOne,
     switchTwo: updatedSwitchTwo,

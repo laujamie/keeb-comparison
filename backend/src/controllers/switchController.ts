@@ -33,3 +33,14 @@ export const getSwitches = async (req: Request, res: Response) => {
   const switches = await SwitchModel.query().where({ isVerified: 1 });
   return res.json({ switches });
 };
+
+export const getSwitch = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const switchRes = await SwitchModel.query().findById(id);
+  if (!switchRes.isVerified) {
+    return res.status(400).json({
+      error: 'Switch is not verified',
+    });
+  }
+  return res.json({ switchRes });
+};

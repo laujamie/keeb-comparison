@@ -4,6 +4,7 @@ import {
   addSwitch,
   approveSwitch,
   getSwitches,
+  getSwitch,
 } from '../controllers/switchController';
 
 const router = Router();
@@ -15,6 +16,8 @@ router.post(
   [isAuthenticated, isAuthorized(['admin'])],
   approveSwitch
 );
+
+router.get('/:id', getSwitch);
 
 router.get('/', getSwitches);
 

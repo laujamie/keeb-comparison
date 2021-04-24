@@ -15,7 +15,7 @@ class MatchModel extends BaseModel {
   }
 
   static relationMappings = {
-    switchOneId: {
+    switchOne: {
       relation: Model.HasManyRelation,
       modelClass: SwitchModel,
       join: {
@@ -23,7 +23,7 @@ class MatchModel extends BaseModel {
         to: 'matches.switchOneId',
       },
     },
-    switchTwoId: {
+    switchTwo: {
       relation: Model.HasManyRelation,
       modelClass: SwitchModel,
       join: {
