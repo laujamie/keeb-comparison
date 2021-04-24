@@ -6,23 +6,7 @@ import { Skeleton } from '@material-ui/lab';
 import { apiClient } from '../../services/apiService';
 import { HeadCell } from '../../types/tables';
 import SortTable from '../../components/SortTable';
-
-interface Switch {
-  name: string;
-  type: string;
-  elo: number;
-  numMatches: number;
-  [name: string]: string | number;
-}
-
-interface SwitchResponse {
-  switches: Switch[];
-}
-
-const fetchSwitches = async () => {
-  const response = await apiClient.get<SwitchResponse>('/switches');
-  return response.data;
-};
+import { useSwitches, Switch } from '../../queries/switchQueries';
 
 const useStyles = makeStyles({
   tableCell: {
@@ -43,14 +27,10 @@ const headCells: HeadCell<Switch>[] = [
 ];
 
 const LeaderboardView: React.FC = () => {
-  const { isError, isLoading, data } = useQuery('all-switches', fetchSwitches);
+  const { isError, isLoading, data: switches } = useSwitches();
   const classes = useStyles();
 
-  useEffect(() => {
-    if (!isLoading) console.log(data);
-  }, [isLoading, data]);
-
-  if (isLoading || !data) {
+  if (isLoading || !switches) {
     return <Skeleton height={600} />;
   }
 
@@ -64,11 +44,11 @@ const LeaderboardView: React.FC = () => {
     <div style={{ width: '100%' }}>
       <SortTable
         headCells={headCells}
-        data={data.switches.map(
+        data={switches.map(
           (newSwitch: Switch): Switch => ({
             name: newSwitch.name,
             type: newSwitch.type,
-            elo: newSwitch.elo,
+            elo: Math.round(newSwitch.elo),
             numMatches: newSwitch.numMatches,
           })
         )}
