@@ -25,3 +25,7 @@ export const getUserProfile = (): UserProfile | null => {
   }
   return null;
 };
+
+export const signOut = () => {
+  return auth.signOut();
+};
