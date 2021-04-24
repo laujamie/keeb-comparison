@@ -18,7 +18,7 @@ const AuthenticatedRoute: React.FC<AuthenticatedRouteProps> = ({
 
   return (
     <Route {...props}>
-      {!isLoaded && LoadingComponent ? LoadingComponent : <CircularProgress />}
+      {!isLoaded && (LoadingComponent || <CircularProgress />)}
       {isLoaded &&
         (isAuthenticated ? (
           children
