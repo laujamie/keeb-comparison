@@ -33,7 +33,8 @@ const UnauthenticatedRoute: React.FC<UnuthenticatedRouteProps> = ({
   const redirect = queryString('redirect');
   return (
     <Route {...rest}>
-      {!isLoaded && LoadingComponent ? LoadingComponent : <CircularProgress />}
+      {!isLoaded &&
+        (LoadingComponent ? LoadingComponent : <CircularProgress />)}
       {isLoaded &&
         (!isAuthenticated ? (
           children
