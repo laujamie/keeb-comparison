@@ -7,7 +7,6 @@ export async function seed(knex: Knex): Promise<void> {
   // Inserts seed entries
   await knex('switches').insert([
     {
-      id: 1,
       name: 'Cherry MX Brown',
       description:
         'The scratchiest linear switch on the market, marketed to gamers as a tactile switch.',
@@ -17,7 +16,6 @@ export async function seed(knex: Knex): Promise<void> {
       type: 'tactile',
     },
     {
-      id: 2,
       name: 'Holy Pandas',
       description:
         'One of the thockiest tactile switches on the market. Expensive, but loved by the community.',
@@ -27,7 +25,6 @@ export async function seed(knex: Knex): Promise<void> {
       type: 'tactile',
     },
     {
-      id: 3,
       name: 'Gateron Yellow',
       description:
         'Hailed as the budget king of linear switches, this switch provides a buttery smooth experience for anyone on a tight budget.',
@@ -37,7 +34,6 @@ export async function seed(knex: Knex): Promise<void> {
       type: 'linear',
     },
     {
-      id: 4,
       name: 'Gateron Black Ink',
       description:
         'Premium smoothness from Gateron with a slightly heaview spring weight.',
@@ -47,7 +43,6 @@ export async function seed(knex: Knex): Promise<void> {
       type: 'linear',
     },
     {
-      id: 5,
       name: 'Kailh Box Jades',
       description: 'Thicc clicks that make all your friends hate you',
       elo: 1000.0,
@@ -56,7 +51,6 @@ export async function seed(knex: Knex): Promise<void> {
       type: 'clicky',
     },
     {
-      id: 6,
       name: 'Feker Pandas',
       description: "Fake Holy Pandas. At least they're better than MX Browns",
       elo: 1000.0,
