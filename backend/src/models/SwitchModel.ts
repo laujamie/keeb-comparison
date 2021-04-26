@@ -7,6 +7,7 @@ class SwitchModel extends BaseModel {
   elo!: number;
   numMatches!: number;
   isVerified!: boolean;
+  type!: string;
 
   static get tableName() {
     return 'switches';

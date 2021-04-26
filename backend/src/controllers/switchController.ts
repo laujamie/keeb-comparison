@@ -4,7 +4,7 @@ import SwitchModel from '../models/SwitchModel';
 const NUM_SWITCHES = 2;
 
 export const addSwitch = async (req: Request, res: Response) => {
-  const { name, description } = req.body;
+  const { name, description, type } = req.body;
   if (!name || !description) {
     return res.status(400).json({
       error: 'You must provide a name and description',
@@ -13,6 +13,7 @@ export const addSwitch = async (req: Request, res: Response) => {
   const newSwitch = await SwitchModel.query().insert({
     name,
     description,
+    type,
   });
   return res.json({
     message: 'Switch was added successfully',
@@ -27,6 +28,11 @@ export const approveSwitch = async (req: Request, res: Response) => {
   return res.json({
     message: `Verification status for switch ${id} updated successfully`,
   });
+};
+
+export const getUnapprovedSwitches = async (req: Request, res: Response) => {
+  const switches = await SwitchModel.query().where({ isVerified: 0 });
+  return res.json({ switches });
 };
 
 export const getSwitches = async (req: Request, res: Response) => {

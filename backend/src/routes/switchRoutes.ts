@@ -5,20 +5,28 @@ import {
   approveSwitch,
   getSwitches,
   getSwitch,
+  getUnapprovedSwitches,
 } from '../controllers/switchController';
+import { routeHandler } from '../util/routeUtil';
 
 const router = Router();
 
-router.post('/new', isAuthenticated, addSwitch);
+router.post('/new', isAuthenticated, routeHandler(addSwitch));
 
 router.post(
   '/:userId/verify',
   [isAuthenticated, isAuthorized(['admin'])],
-  approveSwitch
+  routeHandler(approveSwitch)
 );
 
-router.get('/:id', getSwitch);
+router.get(
+  '/pending',
+  [isAuthenticated, isAuthorized(['admin'])],
+  routeHandler(getUnapprovedSwitches)
+);
 
-router.get('/', getSwitches);
+router.get('/:id', routeHandler(getSwitch));
+
+router.get('/', routeHandler(getSwitches));
 
 export default router;
