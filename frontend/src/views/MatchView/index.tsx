@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   Card,
   CardContent,
@@ -40,10 +40,6 @@ const MatchView: React.FC = () => {
     match?.id,
     queryClient
   );
-
-  useEffect(() => {
-    console.log(switchOne, switchTwo);
-  }, [switchOne, switchTwo]);
 
   if (
     matchLoading ||

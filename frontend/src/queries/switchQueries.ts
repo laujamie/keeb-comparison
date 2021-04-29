@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery, useMutation, QueryClient } from 'react-query';
 import { authApiClient, apiClient } from '../services/apiService';
 import { mergeWithDefaultOptions } from '../util/queryUtil';
 
@@ -12,6 +12,12 @@ type SwitchResponse = {
     type: string;
     name: string;
   };
+};
+
+type NewSwitchRequest = {
+  name: string;
+  description: string;
+  type: string;
 };
 
 export interface Switch {
@@ -47,6 +53,32 @@ export async function getSwitches() {
   return response.data.switches;
 }
 
+export async function getPendingSwitches() {
+  const response = await apiClient.get<SwitchesResponse>('/switches/pending');
+  return response.data.switches;
+}
+
 export function useSwitches() {
   return useQuery('all-switches', getSwitches, mergeWithDefaultOptions());
+}
+
+export function usePendingSwitches() {
+  return useQuery(
+    'pending-switches',
+    getPendingSwitches,
+    mergeWithDefaultOptions()
+  );
+}
+
+export async function postNewSwitch(req: NewSwitchRequest) {
+  const response = await authApiClient.post('/switches/new', req);
+  return response.data;
+}
+
+export function usePostNewSwitch(queryClient: QueryClient) {
+  return useMutation((req: NewSwitchRequest) => postNewSwitch(req), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('all-switches');
+    },
+  });
 }
