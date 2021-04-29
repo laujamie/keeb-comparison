@@ -14,6 +14,7 @@ import {
   ListItem,
   ListItemText,
   Drawer,
+  Divider,
 } from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { AccountCircle, Menu as MenuIcon } from '@material-ui/icons';
@@ -64,7 +65,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const AppBar: React.FC = () => {
   const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLElement | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const { isAuthenticated } = useRecoilValue(userState);
+  const { isAuthenticated, isAdmin } = useRecoilValue(userState);
 
   const classes = useStyles();
 
@@ -110,13 +111,9 @@ const AppBar: React.FC = () => {
     if (!user) return null;
     return (
       <Grid item>
-        <Button
-          color="inherit"
-          startIcon={<AccountCircle />}
-          onClick={handleMenuOpen}
-        >
-          {user.email}
-        </Button>
+        <IconButton color="inherit" onClick={handleMenuOpen}>
+          <AccountCircle />
+        </IconButton>
         <Menu
           id="user-details"
           anchorEl={menuAnchorEl}
@@ -133,6 +130,13 @@ const AppBar: React.FC = () => {
             horizontal: 'right',
           }}
         >
+          <MenuItem disabled>{user.email}</MenuItem>
+          <Divider />
+          {isAdmin && (
+            <MenuItem component={RouterLink} to="/admin">
+              Admin Dashboard
+            </MenuItem>
+          )}
           <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </Menu>
       </Grid>
@@ -181,7 +185,7 @@ const AppBar: React.FC = () => {
                 {renderSideMenu()}
               </Drawer>
             </Grid>
-            <Grid item xs wrap="nowrap">
+            <Grid item xs>
               <Link
                 component={RouterLink}
                 to="/"

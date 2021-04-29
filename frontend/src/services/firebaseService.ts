@@ -13,6 +13,12 @@ export const getIdToken = async () => {
   return null;
 };
 
+export const getIdTokenResult = async () => {
+  const user = auth.currentUser;
+  if (user) return user.getIdTokenResult();
+  return null;
+};
+
 export const getUserProfile = (): UserProfile | null => {
   const user = auth.currentUser;
   if (user) {

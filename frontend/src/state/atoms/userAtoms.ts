@@ -3,6 +3,7 @@ import { atom } from 'recoil';
 type UserState = {
   isLoaded: boolean;
   isAuthenticated: boolean;
+  isAdmin: boolean;
 };
 
 export const userState = atom<UserState>({
@@ -10,5 +11,6 @@ export const userState = atom<UserState>({
   default: {
     isLoaded: false,
     isAuthenticated: false,
+    isAdmin: false,
   },
 });
