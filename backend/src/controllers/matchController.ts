@@ -41,22 +41,24 @@ export const updateMatchStatus = async (req: Request, res: Response) => {
   const match = await MatchModel.query().findById(matchId);
   if (match.uid !== userId) throw new AuthorizationError(userId);
   if (match.completedDate) throw new MatchCompletedError(matchId);
-  await match
-    .$query()
-    .patch({ completedDate: new Date().toISOString(), switchOneWin });
-  const [switchOne, switchTwo] = await SwitchModel.query().findByIds([
-    match.switchOneId,
-    match.switchTwoId,
+  const [switchOne, switchTwo] = await Promise.all([
+    SwitchModel.query().findById(match.switchOneId),
+    SwitchModel.query().findById(match.switchTwoId),
+    match
+      .$query()
+      .patch({ completedDate: new Date().toISOString(), switchOneWin }),
   ]);
   const [oldEloOne, oldEloTwo] = [switchOne.elo, switchTwo.elo];
-  const updatedSwitchOne = await switchOne.$query().patchAndFetch({
-    elo: calculateElo(oldEloOne, oldEloTwo, switchOneWin),
-    numMatches: switchOne.numMatches + 1,
-  });
-  const updatedSwitchTwo = await switchTwo.$query().patchAndFetch({
-    elo: calculateElo(oldEloTwo, oldEloOne, !switchOneWin),
-    numMatches: switchTwo.numMatches + 1,
-  });
+  const [updatedSwitchOne, updatedSwitchTwo] = await Promise.all([
+    switchOne.$query().patchAndFetch({
+      elo: calculateElo(oldEloOne, oldEloTwo, switchOneWin),
+      numMatches: switchOne.numMatches + 1,
+    }),
+    switchTwo.$query().patchAndFetch({
+      elo: calculateElo(oldEloTwo, oldEloOne, !switchOneWin),
+      numMatches: switchTwo.numMatches + 1,
+    }),
+  ]);
   return res.json({
     switchOne: updatedSwitchOne,
     switchTwo: updatedSwitchTwo,
