@@ -26,7 +26,7 @@ const SignUp: React.FC = () => {
     register,
     handleSubmit,
     watch,
-    errors,
+    formState: { errors },
     setError,
     reset,
   } = useForm<SignUpInputs>();
@@ -70,44 +70,61 @@ const SignUp: React.FC = () => {
                 <Grid item xs={12}>
                   <TextField
                     id="email"
-                    name="email"
-                    inputRef={register({ required: true })}
-                    required
                     label="Email"
                     variant="outlined"
                     fullWidth
+                    error={errors.email !== undefined}
+                    helperText={errors.email && errors.email.message}
+                    {...register('email', {
+                      required: { value: true, message: 'Email is required.' },
+                    })}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
                     id="password"
-                    name="password"
-                    inputRef={register({ required: true })}
-                    required
                     label="Password"
                     type="password"
                     variant="outlined"
                     fullWidth
+                    error={errors.password !== undefined}
+                    helperText={errors.password && errors.password.message}
+                    {...register('password', {
+                      required: {
+                        value: true,
+                        message: 'Password is required.',
+                      },
+                      minLength: {
+                        value: 8,
+                        message: 'Password must be at least 8 characters long.',
+                      },
+                    })}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
                     id="confirm-password"
-                    name="confirmPassword"
-                    inputRef={register({
-                      required: true,
-                      validate: validateConfirmPassword,
-                    })}
-                    required
                     label="Confirm Password"
                     type="password"
                     variant="outlined"
+                    error={errors.confirmPassword !== undefined}
                     helperText={
                       errors.confirmPassword
                         ? errors.confirmPassword.message
                         : ''
                     }
                     fullWidth
+                    {...register('confirmPassword', {
+                      required: {
+                        value: true,
+                        message: 'Confirm Password is required.',
+                      },
+                      minLength: {
+                        value: 8,
+                        message: 'Password must be at least 8 characters long.',
+                      },
+                      validate: validateConfirmPassword,
+                    })}
                   />
                 </Grid>
                 {firebaseError && (

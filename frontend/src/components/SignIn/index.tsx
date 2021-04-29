@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import {
@@ -20,7 +20,12 @@ type SignInInputs = {
 };
 
 const SignIn: React.FC = () => {
-  const { register, handleSubmit, reset } = useForm<SignInInputs>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<SignInInputs>();
   const [firebaseError, setFirebaseError] = useState<string>('');
 
   const onSubmit = async (data: SignInInputs, e: any) => {
@@ -45,24 +50,35 @@ const SignIn: React.FC = () => {
                 <Grid item xs={12}>
                   <TextField
                     id="email"
-                    name="email"
-                    inputRef={register({ required: true })}
-                    required
                     label="Email"
                     variant="outlined"
                     fullWidth
+                    error={errors.email !== undefined}
+                    helperText={errors.email && errors.email.message}
+                    {...register('email', {
+                      required: { value: true, message: 'Email is required.' },
+                    })}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
                     id="password"
-                    name="password"
-                    inputRef={register({ required: true })}
-                    required
                     label="Password"
                     type="password"
                     variant="outlined"
                     fullWidth
+                    error={errors.password !== undefined}
+                    helperText={errors.password && errors.password.message}
+                    {...register('password', {
+                      required: {
+                        value: true,
+                        message: 'Password is required.',
+                      },
+                      minLength: {
+                        value: 8,
+                        message: 'Password must be at least 8 characters long.',
+                      },
+                    })}
                   />
                 </Grid>
                 <Grid item xs={12}>

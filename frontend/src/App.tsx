@@ -8,6 +8,7 @@ import SignUpView from './views/SignUpView';
 import PasswordResetView from './views/PasswordResetView';
 import LeaderboardView from './views/LeaderboardView';
 import MatchView from './views/MatchView';
+import NewSwitchView from './views/NewSwitchView';
 import { auth } from './util/firebase';
 import { userState } from './state/atoms/userAtoms';
 import AppBar from './components/AppBar';
@@ -31,17 +32,18 @@ const App = () => {
   useEffect(() => {
     const unregisterAuthObserver = auth.onAuthStateChanged((newUser) => {
       if (newUser !== null) {
-        newUser
-          .getIdTokenResult(true)
-          .then((idTokenResult) => console.log(idTokenResult));
-        setUser({
-          isLoaded: true,
-          isAuthenticated: true,
+        newUser.getIdTokenResult(true).then((idTokenResult) => {
+          setUser({
+            isLoaded: true,
+            isAuthenticated: true,
+            isAdmin: idTokenResult.claims.role === 'admin',
+          });
         });
       } else {
         setUser({
           isLoaded: true,
           isAuthenticated: false,
+          isAdmin: false,
         });
       }
     });
@@ -78,6 +80,9 @@ const App = () => {
               <Route path="/leaderboard" exact>
                 <LeaderboardView />
               </Route>
+              <AuthenticatedRoute path="/switches/new" exact>
+                <NewSwitchView />
+              </AuthenticatedRoute>
               <AuthenticatedRoute path="/match" exact>
                 <MatchView />
               </AuthenticatedRoute>

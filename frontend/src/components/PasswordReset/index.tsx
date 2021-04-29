@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import {
   Container,
@@ -10,6 +10,7 @@ import {
   Button,
   Grid,
   Typography,
+  Link,
 } from '@material-ui/core';
 import { auth } from '../../util/firebase';
 
@@ -18,7 +19,12 @@ type PasswordResetInputs = {
 };
 
 const PasswordReset: React.FC = () => {
-  const { register, handleSubmit, reset } = useForm<PasswordResetInputs>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<PasswordResetInputs>();
   const [firebaseError, setFirebaseError] = useState<string>('');
 
   const onSubmit = async (data: PasswordResetInputs, e: any) => {
@@ -39,18 +45,18 @@ const PasswordReset: React.FC = () => {
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={3}>
-              <Grid container item spacing={2}>
-                <Grid item xs={12}>
-                  <TextField
-                    id="email"
-                    name="email"
-                    inputRef={register({ required: true })}
-                    required
-                    label="Email"
-                    variant="outlined"
-                    fullWidth
-                  />
-                </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="email"
+                  label="Email"
+                  variant="outlined"
+                  fullWidth
+                  error={errors.email !== undefined}
+                  helperText={errors.email && errors.email.message}
+                  {...register('email', {
+                    required: { value: true, message: 'Email is required.' },
+                  })}
+                />
               </Grid>
               {firebaseError && (
                 <Grid item xs={12}>
@@ -66,6 +72,13 @@ const PasswordReset: React.FC = () => {
                 >
                   Reset Password
                 </Button>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography>
+                  <Link component={RouterLink} to="/login">
+                    Log In
+                  </Link>
+                </Typography>
               </Grid>
             </Grid>
           </form>
