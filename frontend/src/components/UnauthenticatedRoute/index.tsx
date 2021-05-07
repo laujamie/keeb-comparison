@@ -3,26 +3,11 @@ import { CircularProgress } from '@material-ui/core';
 import { Route, Redirect, RouteProps } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { userState } from '../../state/atoms/userAtoms';
+import { queryString } from '../../util/urlUtil';
 
 type UnuthenticatedRouteProps = {
   LoadingComponent?: React.ReactNode;
 } & RouteProps;
-
-const queryString = (name: string, url = window.location.href) => {
-  name = name.replace(/[[]]/g, '\\$&');
-
-  const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)', 'i');
-  const results = regex.exec(url);
-
-  if (!results) {
-    return null;
-  }
-  if (!results[2]) {
-    return '';
-  }
-
-  return decodeURIComponent(results[2].replace(/\+/g, ' '));
-};
 
 const UnauthenticatedRoute: React.FC<UnuthenticatedRouteProps> = ({
   LoadingComponent,

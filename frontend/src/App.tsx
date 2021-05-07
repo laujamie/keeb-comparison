@@ -9,6 +9,7 @@ import PasswordResetView from './views/PasswordResetView';
 import LeaderboardView from './views/LeaderboardView';
 import MatchView from './views/MatchView';
 import NewSwitchView from './views/NewSwitchView';
+import AdminView from './views/AdminView';
 import { auth } from './util/firebase';
 import { userState } from './state/atoms/userAtoms';
 import AppBar from './components/AppBar';
@@ -85,6 +86,9 @@ const App = () => {
               </AuthenticatedRoute>
               <AuthenticatedRoute path="/match" exact>
                 <MatchView />
+              </AuthenticatedRoute>
+              <AuthenticatedRoute path="/admin" exact adminOnly>
+                <AdminView />
               </AuthenticatedRoute>
               <Route path="/" exact>
                 <div>

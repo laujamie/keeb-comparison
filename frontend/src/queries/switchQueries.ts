@@ -54,7 +54,9 @@ export async function getSwitches() {
 }
 
 export async function getPendingSwitches() {
-  const response = await apiClient.get<SwitchesResponse>('/switches/pending');
+  const response = await authApiClient.get<SwitchesResponse>(
+    '/switches/pending'
+  );
   return response.data.switches;
 }
 
@@ -81,4 +83,23 @@ export function usePostNewSwitch(queryClient: QueryClient) {
       queryClient.invalidateQueries('all-switches');
     },
   });
+}
+
+export async function postApproveSwitch(switchId: string | number) {
+  const response = await authApiClient.post(`/switches/${switchId}/verify`, {
+    isVerified: true,
+  });
+  return response.data;
+}
+
+export function usePostApproveSwitch(queryClient: QueryClient) {
+  return useMutation(
+    (switchId: string | number) => postApproveSwitch(switchId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('all-switches');
+        queryClient.invalidateQueries('pending-switches');
+      },
+    }
+  );
 }
