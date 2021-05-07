@@ -14,7 +14,7 @@ const router = Router();
 router.post('/new', isAuthenticated, routeHandler(addSwitch));
 
 router.post(
-  '/:userId/verify',
+  '/:id/verify',
   [isAuthenticated, isAuthorized(['admin'])],
   routeHandler(approveSwitch)
 );

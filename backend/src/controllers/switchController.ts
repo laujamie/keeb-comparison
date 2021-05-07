@@ -24,7 +24,7 @@ export const addSwitch = async (req: Request, res: Response) => {
 export const approveSwitch = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { isVerified } = req.body;
-  await SwitchModel.query().findById(id).update({ isVerified });
+  await SwitchModel.query().findById(id).patch({ isVerified });
   return res.json({
     message: `Verification status for switch ${id} updated successfully`,
   });
