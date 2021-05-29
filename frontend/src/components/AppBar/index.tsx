@@ -157,6 +157,12 @@ const AppBar: React.FC = () => {
         <ListItem button component={RouterLink} to="/leaderboard">
           <ListItemText primary="Leaderboard" />
         </ListItem>
+        <ListItem button component={RouterLink} to="/match">
+          <ListItemText primary="Match" />
+        </ListItem>
+        <ListItem button component={RouterLink} to="/switches/new">
+          <ListItemText primary="Add Switch" />
+        </ListItem>
       </List>
     </div>
   );
@@ -185,17 +191,47 @@ const AppBar: React.FC = () => {
                 {renderSideMenu()}
               </Drawer>
             </Grid>
-            <Grid item xs>
-              <Link
-                component={RouterLink}
-                to="/"
-                color="inherit"
-                underline="none"
-              >
-                <Typography variant="h6" color="inherit">
-                  KeebComparison
-                </Typography>
-              </Link>
+            <Grid container item xs spacing={1}>
+              <Grid item>
+                <Link
+                  component={RouterLink}
+                  to="/"
+                  color="inherit"
+                  underline="none"
+                >
+                  <Typography variant="h6" color="inherit">
+                    KeebComparison
+                  </Typography>
+                </Link>
+              </Grid>
+              <Grid item>
+                <Button component={RouterLink} to="/" color="inherit">
+                  Home
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  component={RouterLink}
+                  to="/leaderboard"
+                  color="inherit"
+                >
+                  Leaderboard
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button component={RouterLink} to="/match" color="inherit">
+                  Match
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  component={RouterLink}
+                  to="/switches/new"
+                  color="inherit"
+                >
+                  Add Switch
+                </Button>
+              </Grid>
             </Grid>
             {isAuthenticated ? renderUser() : renderLogin()}
           </Grid>

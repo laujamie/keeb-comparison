@@ -3,6 +3,7 @@ import { useSetRecoilState } from 'recoil';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { CssBaseline, Container, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import HomeView from './views/HomeView';
 import SignInView from './views/SignInView';
 import SignUpView from './views/SignUpView';
 import PasswordResetView from './views/PasswordResetView';
@@ -91,9 +92,7 @@ const App = () => {
                 <AdminView />
               </AuthenticatedRoute>
               <Route path="/" exact>
-                <div>
-                  <p>Lmao</p>
-                </div>
+                <HomeView />
               </Route>
             </Switch>
           </Container>
