@@ -1,24 +1,23 @@
 import React from 'react';
-import {
-  Card,
-  CardContent,
-  CardActions,
-  Grid,
-  Typography,
-  useMediaQuery,
-  Button,
-} from '@material-ui/core';
+import { Grid, Typography, useMediaQuery, Button } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 import { Skeleton } from '@material-ui/lab';
+import { useSpring, animated } from 'react-spring';
 import { useQueryClient } from 'react-query';
 import { getUserProfile } from '../../services/firebaseService';
 import { useMatch, usePostMatchResult } from '../../queries/matchQueries';
 import { useSwitch } from '../../queries/switchQueries';
+import SwitchCard from '../../components/SwitchCard';
 
 const MatchView: React.FC = () => {
   const theme = useTheme();
   const matchesMd = useMediaQuery(theme.breakpoints.up('md'));
   const queryClient = useQueryClient();
+  const [animatedProps, set] = useSpring(() => ({
+    to: { opacity: 1 },
+    from: { opacity: 0 },
+    delay: 500,
+  }));
 
   const {
     isLoading: matchLoading,
@@ -41,6 +40,11 @@ const MatchView: React.FC = () => {
     queryClient
   );
 
+  const onClick = (switchOneWin: boolean) => {
+    handleSwitchWin.mutate({ switchOneWin });
+    set({ reset: true });
+  };
+
   if (
     matchLoading ||
     switchOneLoading ||
@@ -55,45 +59,33 @@ const MatchView: React.FC = () => {
     return <Typography>An error occurred</Typography>;
   }
 
+  const switchButton = (switchOneWin: boolean) => (
+    <Button size="small" color="primary" onClick={() => onClick(switchOneWin)}>
+      Pick Winner
+    </Button>
+  );
+
   return (
     <Grid container direction={matchesMd ? 'row' : 'column'} spacing={3}>
       <Grid item md={6}>
-        <Card>
-          <CardContent>
-            <Typography variant="h5" component="h2">
-              {switchOne.name}
-            </Typography>
-            <Typography>{Math.floor(switchOne.elo)}</Typography>
-          </CardContent>
-          <CardActions>
-            <Button
-              size="small"
-              color="primary"
-              onClick={() => handleSwitchWin.mutate({ switchOneWin: true })}
-            >
-              Pick Winner
-            </Button>
-          </CardActions>
-        </Card>
+        <animated.div style={animatedProps}>
+          <SwitchCard
+            switchObj={switchOne}
+            cardActions={switchButton(true)}
+            useCardActions
+            displayElo
+          />
+        </animated.div>
       </Grid>
       <Grid item md={6}>
-        <Card>
-          <CardContent>
-            <Typography variant="h5" component="h2">
-              {switchTwo.name}
-            </Typography>
-            <Typography>{Math.floor(switchTwo.elo)}</Typography>
-          </CardContent>
-          <CardActions>
-            <Button
-              size="small"
-              color="primary"
-              onClick={() => handleSwitchWin.mutate({ switchOneWin: false })}
-            >
-              Pick Winner
-            </Button>
-          </CardActions>
-        </Card>
+        <animated.div style={animatedProps}>
+          <SwitchCard
+            switchObj={switchTwo}
+            cardActions={switchButton(false)}
+            useCardActions
+            displayElo
+          />
+        </animated.div>
       </Grid>
     </Grid>
   );

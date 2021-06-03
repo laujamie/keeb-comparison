@@ -5,16 +5,20 @@ import {
   Typography,
   Button,
   CardProps,
+  CardActions,
+  Grid,
 } from '@material-ui/core';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import { ArrowBack } from '@material-ui/icons';
 import { Link as RouterLink } from 'react-router-dom';
-import { Switch } from '../../queries/switchQueries';
+import { Switch, FullSwitch } from '../../queries/switchQueries';
 
 type SwitchCardProps = CardProps & {
-  switchObj: Switch;
+  switchObj: Switch | FullSwitch;
   redirectUrl?: string;
-  approveSwitch?: any;
+  cardActions?: React.ReactNode | JSX.Element;
+  displayElo?: boolean;
+  useCardActions?: boolean;
 };
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -23,13 +27,18 @@ const useStyles = makeStyles((theme: Theme) =>
       textTransform: 'capitalize',
       marginTop: `-${theme.spacing(0.5)}px`,
     },
+    actionsArea: {
+      marginTop: theme.spacing(1),
+    },
   })
 );
 
 const SwitchCard: React.FC<SwitchCardProps> = ({
   switchObj,
   redirectUrl,
-  approveSwitch,
+  cardActions,
+  useCardActions,
+  displayElo,
   ...props
 }) => {
   const classes = useStyles();
@@ -46,9 +55,18 @@ const SwitchCard: React.FC<SwitchCardProps> = ({
             Go back
           </Button>
         )}
-        <Typography variant="h5" component="h2">
-          {switchObj.name}
-        </Typography>
+        <Grid container alignItems="center">
+          <Grid item xs>
+            <Typography variant="h5" component="h2">
+              {switchObj.name}
+            </Typography>
+          </Grid>
+          {displayElo && (
+            <Typography color="textSecondary">
+              Elo: {Math.floor(switchObj.elo)}
+            </Typography>
+          )}
+        </Grid>
         <Typography
           color="textSecondary"
           className={classes.typeText}
@@ -57,12 +75,13 @@ const SwitchCard: React.FC<SwitchCardProps> = ({
           {switchObj.type}
         </Typography>
         <Typography>{switchObj.description}</Typography>
-        {approveSwitch && (
-          <Button onClick={approveSwitch} variant="contained" color="primary">
-            Approve
-          </Button>
+        {!useCardActions && cardActions && (
+          <div className={classes.actionsArea}>{cardActions}</div>
         )}
       </CardContent>
+      {useCardActions && cardActions && (
+        <CardActions>{cardActions}</CardActions>
+      )}
     </Card>
   );
 };
