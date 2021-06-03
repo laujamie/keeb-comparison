@@ -2,16 +2,18 @@ import { useQuery, useMutation, QueryClient } from 'react-query';
 import { authApiClient, apiClient } from '../services/apiService';
 import { mergeWithDefaultOptions } from '../util/queryUtil';
 
+export type FullSwitch = {
+  description: string;
+  elo: number;
+  id: number;
+  isVerified: boolean;
+  numMatches: number;
+  type: string;
+  name: string;
+};
+
 type SwitchResponse = {
-  switchRes: {
-    description: string;
-    elo: number;
-    id: number;
-    isVerified: boolean;
-    numMatches: number;
-    type: string;
-    name: string;
-  };
+  switchRes: FullSwitch;
 };
 
 type NewSwitchRequest = {
