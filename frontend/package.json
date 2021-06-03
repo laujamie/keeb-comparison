@@ -24,6 +24,7 @@
     "react-query": "^3.13.11",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
+    "react-spring": "^9.2.1",
     "react-window": "^1.8.6",
     "recoil": "^0.1.2",
     "styled-components": "^5.2.1",
