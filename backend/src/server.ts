@@ -15,10 +15,10 @@ Model.knex(db);
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-// Set up gkobal app middleware
+// Set up global app middleware
 const corsConfig = {
-  origin: [process.env.CLIENT_URL || 'http://localhost:3000'],
-  methods: ['GET', 'POST'],
+  origin: process.env.CLIENT_URL || 'http://localhost:3000',
+  methods: ['GET', 'POST', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
