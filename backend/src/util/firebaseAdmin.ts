@@ -1,12 +1,24 @@
 import admin from 'firebase-admin';
 
-const firebaseAdmin = admin.initializeApp({
-  credential: admin.credential.cert({
-    projectId: process.env.FIREBASE_PROJECT_ID,
-    privateKey: process.env.FIREBASE_PRIVATE_KEY,
-    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-  }),
-});
+let firebaseAdmin: admin.app.App;
+
+try {
+  firebaseAdmin = admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    }),
+  });
+} catch {
+  firebaseAdmin = admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY,
+      clientEmail: JSON.parse(process.env.FIREBASE_CLIENT_EMAIL as string),
+    }),
+  });
+}
 
 export type DecodedIdToken = admin.auth.DecodedIdToken;
 
