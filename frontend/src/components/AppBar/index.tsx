@@ -47,15 +47,15 @@ const useStyles = makeStyles((theme: Theme) =>
       overflow: 'auto',
     },
     desktopMenu: {
-      [theme.breakpoints.only('md')]: {
+      [theme.breakpoints.only('sm')]: {
         display: 'initial',
       },
-      [theme.breakpoints.down('md')]: {
+      [theme.breakpoints.down('sm')]: {
         display: 'none',
       },
     },
     mobileMenu: {
-      [theme.breakpoints.up('md')]: {
+      [theme.breakpoints.up('sm')]: {
         display: 'none',
       },
     },
@@ -204,12 +204,12 @@ const AppBar: React.FC = () => {
                   </Typography>
                 </Link>
               </Grid>
-              <Grid item>
+              <Grid item className={classes.desktopMenu}>
                 <Button component={RouterLink} to="/" color="inherit">
                   Home
                 </Button>
               </Grid>
-              <Grid item>
+              <Grid item className={classes.desktopMenu}>
                 <Button
                   component={RouterLink}
                   to="/leaderboard"
@@ -218,12 +218,12 @@ const AppBar: React.FC = () => {
                   Leaderboard
                 </Button>
               </Grid>
-              <Grid item>
+              <Grid item className={classes.desktopMenu}>
                 <Button component={RouterLink} to="/match" color="inherit">
                   Match
                 </Button>
               </Grid>
-              <Grid item>
+              <Grid item className={classes.desktopMenu}>
                 <Button
                   component={RouterLink}
                   to="/switches/new"
