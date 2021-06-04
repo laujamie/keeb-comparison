@@ -27,10 +27,10 @@ const config: Config = {
       max: 20,
     },
     migrations: {
-      directory: './src/data/migrations',
+      directory: './data/migrations',
     },
     seeds: {
-      directory: './src/data/seeds',
+      directory: './data/seeds',
     },
     ...knexSnakeCaseMappers(),
   },
