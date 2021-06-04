@@ -8,6 +8,8 @@
   "license": "MIT",
   "scripts": {
     "start": "cd backend && npm start",
-    "heroku-postbuild": "cd backend && npm install && npm run build"
+    "heroku-postbuild": "cd backend && npm install && npm run build",
+    "migrate:latest": "cd backend && knex migrate:latest",
+    "seed": "cd backend && knex seed:run"
   }
 }
