@@ -21,7 +21,10 @@ const config: Config = {
 
   production: {
     client: 'pg',
-    connection: process.env.DATABASE_URL,
+    connection: {
+      ssl: { rejectUnauthorized: false },
+      connectionString: process.env.DATABASE_URL,
+    },
     pool: {
       min: 2,
       max: 20,
