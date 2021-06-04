@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Skeleton } from '@material-ui/lab';
 import { HeadCell } from '../../types/tables';
 import SortTable from '../../components/SortTable';
+import Seo from '../../components/Seo';
 import { useSwitches, Switch } from '../../queries/switchQueries';
 
 const useStyles = makeStyles({
@@ -40,6 +41,7 @@ const LeaderboardView: React.FC = () => {
 
   return (
     <div style={{ width: '100%' }}>
+      <Seo title="Leaderboard" />
       <SortTable
         headCells={headCells}
         data={switches.map(

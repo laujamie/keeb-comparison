@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { usePostNewSwitch } from '../../queries/switchQueries';
+import Seo from '../../components/Seo';
 
 type SwitchInputs = {
   name: string;
@@ -48,6 +49,7 @@ const NewSwitchView = () => {
 
   return (
     <Card>
+      <Seo title="New Switch" />
       <CardContent>
         <Typography variant="h4" component="h1" className={classes.header}>
           New Switch

@@ -9,6 +9,7 @@ import {
   usePostApproveSwitch,
 } from '../../queries/switchQueries';
 import SwitchCard from '../../components/SwitchCard';
+import Seo from '../../components/Seo';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -52,6 +53,7 @@ const AdminView = () => {
 
   return (
     <div>
+      <Seo title="Admin Dashboard" />
       <Typography component="h1" variant="h4" className={classes.header}>
         Admin Dashboard
       </Typography>

@@ -8,6 +8,7 @@ import { getUserProfile } from '../../services/firebaseService';
 import { useMatch, usePostMatchResult } from '../../queries/matchQueries';
 import { useSwitch } from '../../queries/switchQueries';
 import SwitchCard from '../../components/SwitchCard';
+import Seo from '../../components/Seo';
 
 const MatchView: React.FC = () => {
   const theme = useTheme();
@@ -66,28 +67,31 @@ const MatchView: React.FC = () => {
   );
 
   return (
-    <Grid container direction={matchesMd ? 'row' : 'column'} spacing={3}>
-      <Grid item md={6}>
-        <animated.div style={animatedProps}>
-          <SwitchCard
-            switchObj={switchOne}
-            cardActions={switchButton(true)}
-            useCardActions
-            displayElo
-          />
-        </animated.div>
+    <>
+      <Seo title="Match" />
+      <Grid container direction={matchesMd ? 'row' : 'column'} spacing={3}>
+        <Grid item md={6}>
+          <animated.div style={animatedProps}>
+            <SwitchCard
+              switchObj={switchOne}
+              cardActions={switchButton(true)}
+              useCardActions
+              displayElo
+            />
+          </animated.div>
+        </Grid>
+        <Grid item md={6}>
+          <animated.div style={animatedProps}>
+            <SwitchCard
+              switchObj={switchTwo}
+              cardActions={switchButton(false)}
+              useCardActions
+              displayElo
+            />
+          </animated.div>
+        </Grid>
       </Grid>
-      <Grid item md={6}>
-        <animated.div style={animatedProps}>
-          <SwitchCard
-            switchObj={switchTwo}
-            cardActions={switchButton(false)}
-            useCardActions
-            displayElo
-          />
-        </animated.div>
-      </Grid>
-    </Grid>
+    </>
   );
 };
 
