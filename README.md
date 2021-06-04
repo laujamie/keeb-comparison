@@ -1,6 +1,6 @@
 # Switch Comparison
 
-ELO based comparison of different key switches built with React, Express, and PostgreSQL.
+ELO based comparison of different key switches built with React, Express, PostgreSQL, and Docker Compose.
 A demo of the app can be found [here](https://keeb-comparison.vercel.app/leaderboard).
 
 ## Running Locally
