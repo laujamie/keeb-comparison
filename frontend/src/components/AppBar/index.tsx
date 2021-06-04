@@ -218,20 +218,24 @@ const AppBar: React.FC = () => {
                   Leaderboard
                 </Button>
               </Grid>
-              <Grid item className={classes.desktopMenu}>
-                <Button component={RouterLink} to="/match" color="inherit">
-                  Match
-                </Button>
-              </Grid>
-              <Grid item className={classes.desktopMenu}>
-                <Button
-                  component={RouterLink}
-                  to="/switches/new"
-                  color="inherit"
-                >
-                  Add Switch
-                </Button>
-              </Grid>
+              {isAuthenticated && (
+                <>
+                  <Grid item className={classes.desktopMenu}>
+                    <Button component={RouterLink} to="/match" color="inherit">
+                      Match
+                    </Button>
+                  </Grid>
+                  <Grid item className={classes.desktopMenu}>
+                    <Button
+                      component={RouterLink}
+                      to="/switches/new"
+                      color="inherit"
+                    >
+                      Add Switch
+                    </Button>
+                  </Grid>
+                </>
+              )}
             </Grid>
             {isAuthenticated ? renderUser() : renderLogin()}
           </Grid>
