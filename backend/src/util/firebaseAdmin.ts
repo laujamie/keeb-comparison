@@ -4,8 +4,8 @@ const config: admin.ServiceAccount = {
   projectId: process.env.FIREBASE_PROJECT_ID,
   privateKey: process.env.FIREBASE_PRIVATE_KEY,
   clientEmail:
-    process.env.NODE_ENV === 'production'
-      ? JSON.parse(process.env.FIREBASE_CLIENT_EMAIL as string)
+    process.env.NODE_ENV === 'production' && process.env.FIREBASE_CLIENT_EMAIL
+      ? process.env.FIREBASE_CLIENT_EMAIL.replace(/\\n/g, '\n')
       : process.env.FIREBASE_CLIENT_EMAIL,
 };
 
