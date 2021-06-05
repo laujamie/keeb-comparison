@@ -137,6 +137,9 @@ const AppBar: React.FC = () => {
               Admin Dashboard
             </MenuItem>
           )}
+          <MenuItem component={RouterLink} to="/profile">
+            Profile
+          </MenuItem>
           <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </Menu>
       </Grid>

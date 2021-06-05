@@ -11,6 +11,7 @@ import LeaderboardView from './views/LeaderboardView';
 import MatchView from './views/MatchView';
 import NewSwitchView from './views/NewSwitchView';
 import AdminView from './views/AdminView';
+import ProfileView from './views/ProfileView';
 import { auth } from './util/firebase';
 import { userState } from './state/atoms/userAtoms';
 import AppBar from './components/AppBar';
@@ -90,6 +91,9 @@ const App = () => {
               </AuthenticatedRoute>
               <AuthenticatedRoute path="/admin" exact adminOnly>
                 <AdminView />
+              </AuthenticatedRoute>
+              <AuthenticatedRoute path="/profile" exact>
+                <ProfileView />
               </AuthenticatedRoute>
               <Route path="/" exact>
                 <HomeView />
