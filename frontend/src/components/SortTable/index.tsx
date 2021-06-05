@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Paper,
   Table,
   TableBody,
   TableRow,
@@ -8,18 +7,9 @@ import {
   TableContainer,
   TablePagination,
 } from '@material-ui/core';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Order, HeadCell } from '../../types/tables';
 import SortHeader from '../SortHeader';
 import { getComparator, stableSort } from '../../util/arrayUtil';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    paper: {
-      width: '100%',
-    },
-  })
-);
 
 type SortTableProps<T extends { [name: string]: number | string }> = {
   headCells: HeadCell<T>[];
@@ -36,7 +26,6 @@ const SortTable = <T extends { [name: string]: number | string }>({
   tableLabel,
   tableCellClassName,
 }: SortTableProps<T>) => {
-  const classes = useStyles();
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<keyof T>(defaultOrder);
   const [page, setPage] = useState(0);
@@ -66,7 +55,7 @@ const SortTable = <T extends { [name: string]: number | string }>({
     rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
   return (
-    <Paper className={classes.paper}>
+    <>
       <TableContainer>
         <Table>
           <SortHeader
@@ -120,7 +109,7 @@ const SortTable = <T extends { [name: string]: number | string }>({
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
       />
-    </Paper>
+    </>
   );
 };
 

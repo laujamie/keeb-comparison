@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography } from '@material-ui/core';
+import { Typography, Card, CardContent } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Skeleton } from '@material-ui/lab';
 import { HeadCell } from '../../types/tables';
@@ -40,8 +40,13 @@ const LeaderboardView: React.FC = () => {
   }
 
   return (
-    <div style={{ width: '100%' }}>
-      <Seo title="Leaderboard" />
+    <Card>
+      <CardContent>
+        <Seo title="Leaderboard" />
+        <Typography variant="h4" component="h1">
+          Leaderboard
+        </Typography>
+      </CardContent>
       <SortTable
         headCells={headCells}
         data={switches.map(
@@ -56,7 +61,7 @@ const LeaderboardView: React.FC = () => {
         tableLabel="switch-leaderboard"
         tableCellClassName={classes.tableCell}
       />
-    </div>
+    </Card>
   );
 };
 
