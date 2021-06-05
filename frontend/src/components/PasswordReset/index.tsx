@@ -11,8 +11,11 @@ import {
   Grid,
   Typography,
   Link,
+  Snackbar,
 } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import { auth } from '../../util/firebase';
+import { createActionCodeSettings } from '../../services/firebaseService';
 
 type PasswordResetInputs = {
   email: string;
@@ -26,16 +29,29 @@ const PasswordReset: React.FC = () => {
     formState: { errors },
   } = useForm<PasswordResetInputs>();
   const [firebaseError, setFirebaseError] = useState<string>('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarEmail, setSnackbarEmail] = useState('');
 
   const onSubmit = async (data: PasswordResetInputs, e: any) => {
     try {
-      await auth.sendPasswordResetEmail(data.email);
+      const config = createActionCodeSettings();
+      await auth.sendPasswordResetEmail(data.email, config);
       e.target.reset();
       reset();
       setFirebaseError('');
+      setSnackbarOpen(true);
+      setSnackbarEmail(data.email);
     } catch (e) {
       setFirebaseError(e.message);
     }
+  };
+
+  const handleSnackbarClose = (e?: React.SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSnackbarOpen(false);
   };
 
   return (
@@ -84,6 +100,20 @@ const PasswordReset: React.FC = () => {
           </form>
         </CardContent>
       </Card>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={5000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="success"
+          variant="filled"
+          elevation={6}
+        >
+          A password reset email has been sent to {snackbarEmail}!
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };

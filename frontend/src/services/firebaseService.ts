@@ -1,3 +1,4 @@
+import firebase from 'firebase';
 import { auth } from '../util/firebase';
 
 type UserProfile = {
@@ -35,3 +36,10 @@ export const getUserProfile = (): UserProfile | null => {
 export const signOut = () => {
   return auth.signOut();
 };
+
+export const createActionCodeSettings = (
+  pathname = '/login'
+): firebase.auth.ActionCodeSettings => ({
+  url: `${window.location.protocol}//${window.location.host}${pathname}`,
+  handleCodeInApp: false,
+});
