@@ -6,3 +6,5 @@ export interface AuthRequest extends Request {
 }
 
 export type UserRole = 'user' | 'admin';
+
+export const ADMIN = 'admin';

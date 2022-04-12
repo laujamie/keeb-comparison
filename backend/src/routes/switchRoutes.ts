@@ -6,8 +6,10 @@ import {
   getSwitches,
   getSwitch,
   getUnapprovedSwitches,
+  removeSwitch,
 } from '../controllers/switchController';
 import { routeHandler } from '../util/routeUtil';
+import { ADMIN } from '../types/auth';
 
 const router = Router();
 
@@ -15,8 +17,14 @@ router.post('/new', isAuthenticated, routeHandler(addSwitch));
 
 router.post(
   '/:id/verify',
-  [isAuthenticated, isAuthorized(['admin'])],
+  [isAuthenticated, isAuthorized([ADMIN])],
   routeHandler(approveSwitch)
+);
+
+router.delete(
+  '/:id',
+  [isAuthenticated, isAuthorized([ADMIN])],
+  routeHandler(removeSwitch)
 );
 
 router.get(

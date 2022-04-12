@@ -27,8 +27,8 @@ export const isAuthenticated = async (
     const decodedToken = await verifyToken(token);
     req.user = decodedToken;
     next();
-  } catch (e) {
-    throw new AuthenticationError(e.message);
+  } catch (e: any) {
+    next(new AuthenticationError(e.message));
   }
 };
 
@@ -43,16 +43,20 @@ export const isAuthorized = (
   allowSameUser: boolean = false
 ) => {
   return (req: AuthRequest, res: Response, next: NextFunction) => {
-    const { user } = req;
-    const { userId } = req.params;
+    try {
+      const { user } = req;
+      const { userId } = req.params;
 
-    if (!user) throw new AuthenticationError();
+      if (user == null) throw new AuthenticationError();
 
-    if (allowSameUser && user.sub === userId) return next();
-    if (!user.role || !validRoles.includes(user.role)) {
-      throw new AuthorizationError(user.sub);
+      if (allowSameUser && user.sub === userId) return next();
+      if (!user.role || !validRoles.includes(user.role)) {
+        throw new AuthorizationError(user.sub);
+      }
+
+      return next();
+    } catch (e: any) {
+      next(e);
     }
-
-    return next();
   };
 };

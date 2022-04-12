@@ -30,6 +30,20 @@ export const approveSwitch = async (req: Request, res: Response) => {
   });
 };
 
+export const removeSwitch = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const isSuccess = await SwitchModel.query().deleteById(id);
+  if (isSuccess > 0) {
+    return res.json({
+      message: `Switch ${id} deleted successfully`,
+    });
+  }
+  res.status(400);
+  return res.json({
+    message: `Failed to delete switch ${id}`,
+  });
+};
+
 export const getUnapprovedSwitches = async (req: Request, res: Response) => {
   const switches = await SwitchModel.query().where({ isVerified: 0 });
   return res.json({ switches });
