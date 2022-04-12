@@ -1,12 +1,13 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Typography, Button } from '@material-ui/core';
+import { Grid, Typography, Button, CircularProgress } from '@material-ui/core';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { Skeleton } from '@material-ui/lab';
 import { useQueryClient } from 'react-query';
 import {
   usePendingSwitches,
   usePostApproveSwitch,
+  useDeleteSwitch,
 } from '../../queries/switchQueries';
 import SwitchCard from '../../components/SwitchCard';
 import Seo from '../../components/Seo';
@@ -29,7 +30,10 @@ const AdminView = () => {
     data: switches,
   } = usePendingSwitches();
   const queryClient = useQueryClient();
-  const { mutate: approveSwitch } = usePostApproveSwitch(queryClient);
+  const { mutate: approveSwitch, isLoading: isPosting } =
+    usePostApproveSwitch(queryClient);
+  const { mutate: deleteSwitch, isLoading: isDeleting } =
+    useDeleteSwitch(queryClient);
   const classes = useStyles();
 
   if (isSwitchesLoading || !switches) {
@@ -41,14 +45,30 @@ const AdminView = () => {
   }
 
   const approveButton = (id: string | number) => (
-    <Button
-      onClick={() => approveSwitch(id)}
-      variant="contained"
-      color="primary"
-      size="small"
-    >
-      Approve
-    </Button>
+    <Grid container spacing={1}>
+      <Grid item>
+        <Button
+          onClick={() => approveSwitch(id)}
+          variant="contained"
+          color="primary"
+          size="small"
+          disabled={isPosting}
+        >
+          {isPosting && <CircularProgress />} Approve
+        </Button>
+      </Grid>
+      <Grid item>
+        <Button
+          variant="contained"
+          color="secondary"
+          size="small"
+          onClick={() => deleteSwitch(id)}
+          disabled={isDeleting}
+        >
+          {isDeleting && <CircularProgress />} Delete
+        </Button>
+      </Grid>
+    </Grid>
   );
 
   return (
@@ -68,24 +88,5 @@ const AdminView = () => {
     </div>
   );
 };
-
-/*
-<Card key={`pending-switch-${switchObj.id}`}>
-          <CardContent>
-            <Typography variant="h5" component="h2">
-              {switchObj.name}
-            </Typography>
-            <Typography>{switchObj.type}</Typography>
-            <Typography>{switchObj.description}</Typography>
-            <Button
-              onClick={() => approveSwitch(switchObj.id)}
-              color="primary"
-              variant="contained"
-            >
-              Approve
-            </Button>
-          </CardContent>
-        </Card>
-*/
 
 export default AdminView;

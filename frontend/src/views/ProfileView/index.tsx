@@ -15,7 +15,7 @@ const ProfileView = () => {
   const profile = getUserProfile();
   const classes = useStyles();
 
-  if (!profile) {
+  if (profile == null) {
     return (
       <Typography>
         You need to be logged in to get the current profile.
@@ -29,6 +29,7 @@ const ProfileView = () => {
         <Typography variant="h4" component="h1">
           Profile
         </Typography>
+        <Typography>Email: {profile.email}</Typography>
       </CardContent>
     </Card>
   );

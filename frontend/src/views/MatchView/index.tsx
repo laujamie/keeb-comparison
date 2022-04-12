@@ -46,6 +46,10 @@ const MatchView: React.FC = () => {
     set({ reset: true });
   };
 
+  if (matchError || switchOneError || switchTwoError) {
+    return <Typography>An error occurred</Typography>;
+  }
+
   if (
     matchLoading ||
     switchOneLoading ||
@@ -54,10 +58,6 @@ const MatchView: React.FC = () => {
     !switchTwo
   ) {
     return <Skeleton height={500} />;
-  }
-
-  if (matchError || switchOneError || switchTwoError) {
-    return <Typography>An error occurred</Typography>;
   }
 
   const switchButton = (switchOneWin: boolean) => (

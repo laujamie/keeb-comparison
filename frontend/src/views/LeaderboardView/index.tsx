@@ -29,14 +29,14 @@ const LeaderboardView: React.FC = () => {
   const { isError, isLoading, data: switches } = useSwitches();
   const classes = useStyles();
 
-  if (isLoading || !switches) {
-    return <Skeleton height={600} />;
-  }
-
   if (isError) {
     return (
       <Typography>An error occurred while loading the leaderboard</Typography>
     );
+  }
+
+  if (isLoading || !switches) {
+    return <Skeleton height={600} />;
   }
 
   return (

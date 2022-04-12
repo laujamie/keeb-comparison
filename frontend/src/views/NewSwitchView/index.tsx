@@ -37,7 +37,13 @@ const NewSwitchView = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<SwitchInputs>();
+  } = useForm<SwitchInputs>({
+    defaultValues: {
+      name: '',
+      description: '',
+      type: '',
+    },
+  });
   const queryClient = useQueryClient();
   const handleSwitchSubmit = usePostNewSwitch(queryClient);
   const classes = useStyles();
@@ -64,7 +70,7 @@ const NewSwitchView = () => {
             control={control}
             defaultValue=""
             rules={{ required: { value: true, message: 'Name is required.' } }}
-            render={({ field }) => (
+            render={({ field: { ref, ...field } }) => (
               <TextField
                 id="name"
                 label="Name"
@@ -72,6 +78,7 @@ const NewSwitchView = () => {
                 variant="outlined"
                 error={errors.name !== undefined}
                 helperText={errors.name && errors.name.message}
+                inputRef={ref}
                 {...field}
               />
             )}
@@ -87,7 +94,7 @@ const NewSwitchView = () => {
                 message: 'Description has a maximum limit of 300 characters.',
               },
             }}
-            render={({ field }) => (
+            render={({ field: { ref, ...field } }) => (
               <TextField
                 id="description"
                 label="Description"
@@ -96,6 +103,7 @@ const NewSwitchView = () => {
                 error={errors.description !== undefined}
                 multiline
                 helperText={errors.description && errors.description.message}
+                inputRef={ref}
                 {...field}
               />
             )}
@@ -105,7 +113,7 @@ const NewSwitchView = () => {
             control={control}
             defaultValue=""
             rules={{ required: { value: true, message: 'Type is required.' } }}
-            render={({ field }) => (
+            render={({ field: { ref, ...field } }) => (
               <TextField
                 id="type"
                 label="Type"
@@ -113,6 +121,7 @@ const NewSwitchView = () => {
                 variant="outlined"
                 error={errors.type !== undefined}
                 helperText={errors.type && errors.type.message}
+                inputRef={ref}
                 {...field}
               />
             )}

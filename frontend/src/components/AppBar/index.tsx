@@ -133,11 +133,19 @@ const AppBar: React.FC = () => {
           <MenuItem disabled>{user.email}</MenuItem>
           <Divider />
           {isAdmin && (
-            <MenuItem component={RouterLink} to="/admin">
+            <MenuItem
+              onClick={handleMenuClose}
+              component={RouterLink}
+              to="/admin"
+            >
               Admin Dashboard
             </MenuItem>
           )}
-          <MenuItem component={RouterLink} to="/profile">
+          <MenuItem
+            onClick={handleMenuClose}
+            component={RouterLink}
+            to="/profile"
+          >
             Profile
           </MenuItem>
           <MenuItem onClick={handleLogout}>Logout</MenuItem>

@@ -81,8 +81,9 @@ export async function postNewSwitch(req: NewSwitchRequest) {
 
 export function usePostNewSwitch(queryClient: QueryClient) {
   return useMutation((req: NewSwitchRequest) => postNewSwitch(req), {
-    onSuccess: () => {
+    onSettled: () => {
       queryClient.invalidateQueries('all-switches');
+      queryClient.invalidateQueries('pending-switches');
     },
   });
 }
@@ -104,4 +105,19 @@ export function usePostApproveSwitch(queryClient: QueryClient) {
       },
     }
   );
+}
+
+export async function deleteSwitch(switchId: string | number) {
+  const response = await authApiClient.delete(`/switches/${switchId}`);
+  return response.data;
+}
+
+export function useDeleteSwitch(queryClient: QueryClient) {
+  return useMutation((switchId: string | number) => deleteSwitch(switchId), {
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries('all-switches');
+      queryClient.invalidateQueries('pending-switches');
+      queryClient.invalidateQueries(['switch', variables]);
+    },
+  });
 }
